@@ -1,23 +1,37 @@
-import logo from './logo.svg';
 import './App.css';
+import Details from './Components/Details';
+import Direction from './Components/Direction';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import UserContext from './Components/UserContext';
+import Home from './Components/Home';
+import GoodBye from './Components/GoodBye';
 
 function App() {
+  const ExcelExportData = [
+    {
+      'firstName': 'yael',
+      'lastName': 'cohen'
+    },
+    {
+      'firstName': 'shira',
+      'lastName': 'levy'
+    }
+  ]
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App" dir="rtl">
+      <BrowserRouter>
+        <UserContext>
+          {/* <Routes>
+            <Route path="/" element={<Home />} >
+              <Route path="/Details" element={<Details />} />
+              <Route path="/Direction" element={<Direction />} />
+              <Route path="/GoodBye" element={<GoodBye/>}/>
+            </Route>
+          </Routes> */}
+          <Home />
+        </UserContext>
+      </BrowserRouter>
     </div>
   );
 }
