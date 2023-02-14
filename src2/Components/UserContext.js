@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 
+
 export const userContext = createContext();
 
 export default function UserContext(props) {
@@ -15,8 +16,6 @@ export default function UserContext(props) {
     const [numChildernState, setNumChildrenState] = useState(0);
     const [childrenFormArr, setChildrenFormArr] = useState([])
 
-
-
     return (
 
         <userContext.Provider value={{
@@ -28,4 +27,5 @@ export default function UserContext(props) {
             {props.children}
         </userContext.Provider>
     )
+
 }

@@ -1,19 +1,20 @@
-import { useState, useContext } from 'react';
+import react, { useState, useContext } from 'react';//
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import UpdateChildern from './UpdateChildern'
 import { userContext } from './UserContext';
 import { useNavigate } from 'react-router-dom';
+import GoodBye from './GoodBye';
+
+import Button from '@mui/material/Button'
 
 export default function Details() {
+
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate()
     const userCtx = useContext(userContext);
     const [parentIdState, setParentIdState] = useState('');
-    const [submit2, setSubmit2] = useState(false);
-    const [end, setEnd] = useState(false)
-    const [tz, setTz] = useState()
-
+    const [end, setEnd] = useState(false);
 
     const handle = (e) => {
         userCtx.setNumChildrenState(e);
@@ -25,8 +26,6 @@ export default function Details() {
     }
 
     function onSubmit1() {
-        setSubmit2(true);
-        //person post
         axios.post('https://localhost:44357/User', {
             Name: userCtx.userNameState, FamilyName: userCtx.familyNameState, UserId: userCtx.TzState,
             DateOfBirth: userCtx.DateOfBirthState, Kind: userCtx.kindState, Hmo: userCtx.HMOState
@@ -38,7 +37,6 @@ export default function Details() {
                     .then(result => {
                         console.log(result)
 
-                        //child post
                         for (let index = 0; index < userCtx.numChildernState; index++) {
                             axios.post('https://localhost:44357/Child', {
                                 Name: userCtx.ChildNameState[index], ChildId: userCtx.tzChildState[index],
@@ -95,17 +93,14 @@ export default function Details() {
                     <span className="input-group-text" id="inputGroup-sizing-lg">הכנס מס' תעודת זהות</span>
                     <input className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"
                         {...register("tz", { required: true, maxLength: 9, minLength: 9 })}
-                        type="text" onChange={(e) => {
-                            userCtx.setTzState(e.target.value)
-                            setTz(e.target.value)
-                        }} defaultValue={userCtx.TzState} ></input>
+                        type="text" onChange={(e) => userCtx.setTzState(e.target.value)} defaultValue={userCtx.TzState} ></input>
                 </div>
                 {errors?.tz?.type === "required" && <p>שדה זה הינו שדה חובה</p>}
+                {errors?.tz?.type === "minLength" && (
+                    <p>מס' תז הינו באורך של לפחות 9 תוים</p>
+                )}
                 {errors?.tz?.type === "maxLength" && (
                     <p>מס' תז הינו באורך של מקסימום 9 תוים</p>
-                )}
-                {errors?.tz?.type === "minLength" && (
-                    <p>מס' תז הינו באורך של מיימנום 9 תוים</p>
                 )}
 
                 <div className="input-group input-group-lg">
@@ -120,7 +115,7 @@ export default function Details() {
                     <span className="input-group-text" id="inputGroup-sizing-lg">בחר מין</span>
                     <select className="form-select" aria-label="Default select example"
                         {...register("kind", { required: true, maxLength: 4 })}
-                        type="text" onChange={(e) => userCtx.setKindState(e.target.value)} defaultValue={userCtx.kindState} >
+                        type="text" onChange={(e) => userCtx.setKindState(e.target.value)} defaultValue={userCtx.kindState}>
                         <option value=""></option>
                         <option value="girl">בת</option>
                         <option value="boy">בן</option>
@@ -154,7 +149,6 @@ export default function Details() {
 
                 <input type="submit" />
             </form>
-            {localStorage.setItem(1, tz)}
             {end && navigate('/GoodBye')}
         </div>
     )
